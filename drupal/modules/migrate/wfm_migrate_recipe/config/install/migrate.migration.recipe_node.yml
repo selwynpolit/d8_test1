@@ -11,8 +11,8 @@ process:
   type:
     plugin: default_value  # source plugin
     default_value: recipe  # assuming 
-  title: name
-  nid: nid
+  title: title  #implied plugin is default "get"
+#  nid: _id
   langcode:
     plugin: default_value
     source: language
