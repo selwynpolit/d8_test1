@@ -50,7 +50,6 @@ class WfmMigrateStore extends SourcePluginBase {
       '_id' => t('Mongo ID for each store'),
       'name' => t('Name of store'),
       'display_name' => t('Display name maybe nickname? of store'), //TODO: is this nickname?
-      'twitter' => t('Twitter handle for store'),
       'tlc' => t('Three letter code for store'),
       'geox' => t('Geolocation x-coordinate'),
       'geoy' => t('Geolocation y-coordinate'),
@@ -62,6 +61,8 @@ class WfmMigrateStore extends SourcePluginBase {
       'zip' => t('Zip code or Postal code'),
       'country' => t('Country'),
       'region' => t('Region'),
+      'has_alcohol' => t('Store sells alcohol'),
+      'twitter' => t('Store twitter username'),
     );
   }
 
@@ -78,13 +79,7 @@ class WfmMigrateStore extends SourcePluginBase {
       return FALSE;
     }
 
-    $tlc = $row->getSourceProperty("tlc") ;
-    $name = $row->getSourceProperty("name") ;
-    $country = $row->getSourceProperty("country") ;
-    $state = $row->getSourceProperty("state") ;
-    $str = sprintf("%s: %s %s %s", $tlc, $name, $state, $country);
 
-    drush_print_r($str);
 
 
     $geo = $row->getSourceProperty("geo_location") ;
@@ -106,9 +101,30 @@ class WfmMigrateStore extends SourcePluginBase {
       $row->setSourceProperty("state", $state);
     }
 
+    $facebook = $row->getSourceProperty("facebook");
+    if (!Empty($facebook)) {
+      $facebook = "https://www.facebook.com/" . ltrim(trim($facebook));
+    }
+    $row->setSourceProperty("facebook", $facebook);
+
+    $has_alcohol = $row->getSourceProperty("has_alcohol") ;
+    if (empty($has_alcohol)) {
+      $has_alcohol = 0 ;
+      $row->setSourceProperty("has_alcohol", $has_alcohol);
+    }
+
+
+    //TODO: "states" not in USA - ie UK & Canada
     //TODO: lookup region eg. NE in taxonomy and store region actual taxonomy in field_store_region
 
+    $tlc = $row->getSourceProperty("tlc") ;
+    $name = $row->getSourceProperty("name") ;
+    $country = $row->getSourceProperty("country") ;
+    $state = $row->getSourceProperty("state") ;
+    $has_alcohol = $row->getSourceProperty("has_alcohol") ;
+    $str = sprintf("%s: %s %s %s alc:%s", $tlc, $name, $state, $country, $has_alcohol);
 
+    drush_print_r($str);
     return parent::prepareRow($row);
   }
 
