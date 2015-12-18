@@ -1,0 +1,41 @@
+# Migration configuration for recipe photos.
+id: recipe_photo
+label: Migrate Recipes photos from Sage into Drupal 8 file entities
+migration_group: wfm
+source:
+  plugin: wfm_migrate_recipe_photo
+destination:
+  plugin: entity:file
+  urlencode: true
+process:
+  uid:
+    plugin: default_value
+    default_value: 1
+#  filename: image_filename
+  filename: uri
+  uri: uri
+#  filemime: filemime
+#  created: created
+#  changed: created
+
+#  'field_recipe_hero_image/preserve_files': image
+#  field_recipe_hero_image:
+#    plugin: entity_file
+#    url:photos
+
+
+#    // Images.
+#    $this->addFieldMapping('field_hero_image', 'field_hero_image');
+#    $this->addFieldMapping('field_hero_image:file_class')
+#      ->defaultValue('MigrateFileUri');
+#    $this->addFieldMapping('field_hero_image:destination_dir')
+#      ->defaultValue('public://media');
+#    $this->addFieldMapping('field_hero_image:destination_file', 'image_filename');
+#    $this->addFieldMapping('field_hero_image:file_replace')
+#      ->defaultValue(MigrateFile::FILE_EXISTS_REUSE);
+#    $this->addFieldMapping('field_hero_image:preserve_files')
+#      ->defaultValue(TRUE);
+#    $this->addFieldMapping('field_hero_image:alt', 'image_alt_text');
+#    $this->addFieldMapping('field_hero_image:title', 'image_title_text');
+
+
