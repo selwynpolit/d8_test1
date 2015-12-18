@@ -7,13 +7,17 @@ source:
 destination:
   plugin: entity:file
   urlencode: true
+  source_path_property: uri
 process:
   uid:
     plugin: default_value
     default_value: 1
 #  filename: image_filename
-  filename: uri
-  uri: uri
+  uri: filename_with_path
+  filename: filename
+
+#  destination_path: destination_path
+#  source_path: filename
 #  filemime: filemime
 #  created: created
 #  changed: created

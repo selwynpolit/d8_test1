@@ -38,7 +38,12 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
       $status = $row['status'];
       if ($status == "Published") {
           foreach ($row['photos'] as $photo) {
-            $uri_array[] = array('uri' => $photo['url']);
+            $filename = basename($photo['url']);
+            $uri_array[] = array(
+              'uri' => $photo['url'],
+              'filename_with_path' => 'public://' . $filename,
+              'filename' => $filename,
+              );
             //$uri_array += array('uri' => $row['photos']['url']);
 
           }
