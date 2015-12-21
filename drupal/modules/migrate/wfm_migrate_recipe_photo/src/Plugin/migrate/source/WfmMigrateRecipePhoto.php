@@ -27,11 +27,11 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     $apiRecipe = new Recipe(API_KEY, API_SECRET, API_URL);
     // using getAllRecipes is the easiest, but might need to use getAllRecipeIds
     // or possibly recipeIterator
-    $apiRecipe->setLimit(10);
+    $apiRecipe->setLimit(20);
     //$rows = $apiRecipe->getAllRecipes();
     $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-1 month'));
     // $rows must be an array or Traversable which yields arrays. That's all!
-    //$it = new \ArrayIterator($rows);
+
     // Return all the images for all the rows.
     $uri_array = array();
     foreach ($rows as $row) {
@@ -54,8 +54,12 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
   }
 
 
-
-  // We need these functions because we are extending an abstract class
+  /**
+   *
+   * I think this identifies the field that is the unique id per row
+   *
+   * @return array
+   */
   public function getIds() {
     return array(
       'uri' => array(
@@ -65,6 +69,14 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     );
   }
 
+  /**
+   *
+   * This provides a list of fields for the U/I.
+   * I don't think it provides any functionality.
+   *
+   *
+   * @return array
+   */
   public function fields() {
     return array(
       'id' => t('ID number for each recipe'),
@@ -117,6 +129,10 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     //$photos = $this->preparePhotos($title, $photos);
     //$row->setSourceProperty("uri", $photos);
     // set created to now..
+
+    $filename = $row->getSourceProperty("filename") ;
+    $str = sprintf("Processing: %s", $filename);
+    drush_print_r($str);
 
     return parent::prepareRow($row);
   }
