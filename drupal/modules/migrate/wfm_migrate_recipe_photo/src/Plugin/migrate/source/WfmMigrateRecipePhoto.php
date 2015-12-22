@@ -124,12 +124,6 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     //  return FALSE;
     //}
 
-    //$title = $row->getSourceProperty("title");
-    //$photos = $row->getSourceProperty("photos");
-    //$photos = $this->preparePhotos($title, $photos);
-    //$row->setSourceProperty("uri", $photos);
-    // set created to now..
-
     $filename = $row->getSourceProperty("filename") ;
     $str = sprintf("Processing: %s", $filename);
     drush_print_r($str);

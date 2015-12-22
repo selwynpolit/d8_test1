@@ -1,9 +1,10 @@
 # Migration configuration for recipe content.
 id: recipe_node
 label: Recipes from Sage
-migration_group: recipe
+migration_group: wfm
 source:
   plugin: wfm_migrate_recipe
+#  track_changes: true  #Note this may not work
 destination:
   plugin: entity:node
 process:
@@ -12,7 +13,8 @@ process:
     plugin: default_value  # source plugin
     default_value: recipe  # assuming 
   title: title  #implied plugin is default "get"
-#  nid: _id
+#  nid: _id # Note. comment nid out so migrate will auto generate a nid
+# else nid is expecting a value for the nid
   langcode:
     plugin: default_value
     source: language
@@ -23,18 +25,56 @@ process:
   sticky:
     plugin: default_value
     default_value: 0
-  field_recipe_cook_time: cook_time
-  #field_recipe_featured:
-    # needs to have another migration to pull in the files
-    # will need to have a dependencies of that migration
-  #field_recipe_hero_image:
+  'field_recipe_body/value': directions
+  'field_recipe_body/summary': description
   field_recipe_mongo_id: _id
-  #field_recipe_nutritional_info:
+  'field_recipe_nutritional_info/value': basic_nutrition
+  'field_recipe_nutritional_info/format':
+    plugin: default_value
+    default_value: 'full_html'
   field_recipe_short_description: description
+  field_recipe_ingredients: ingredients
+  field_recipe_hero_image: photos
+#  'field_recipe_hero_image/value': photos
+#  'field_recipe_hero_image/image_alt_text': title
+#  'field_recipe_hero_image/image_title_text': title
+#  'field_recipe_hero_image/height': height
+#  'field_recipe_hero_image/width': width
+
+# looks like I need to load images in a whole other migration script
+# then here - lookup the matching ones and connect them
+# the other script WfmMigrateRecipeImages will use the dest plugin
+# entity:file
+#
+#  'field_recipe_hero_image/preserve_files': image
+#  field_recipe_hero_image:
+#    plugin: entity_file
+#    url:photos
+
+
+#    // Images.
+#    $this->addFieldMapping('field_hero_image', 'field_hero_image');
+#    $this->addFieldMapping('field_hero_image:file_class')
+#      ->defaultValue('MigrateFileUri');
+#    $this->addFieldMapping('field_hero_image:destination_dir')
+#      ->defaultValue('public://media');
+#    $this->addFieldMapping('field_hero_image:destination_file', 'image_filename');
+#    $this->addFieldMapping('field_hero_image:file_replace')
+#      ->defaultValue(MigrateFile::FILE_EXISTS_REUSE);
+#    $this->addFieldMapping('field_hero_image:preserve_files')
+#      ->defaultValue(TRUE);
+#    $this->addFieldMapping('field_hero_image:alt', 'image_alt_text');
+#    $this->addFieldMapping('field_hero_image:title', 'image_title_text');
+
+
+
+
   # Some Drupal fields may have multiple components we may want to set
   # separately. For example, text fields may have summaries (teasers) in
   # addition to the full text value. We use / to separate the field name from
   # the internal field value being set, and put it in quotes because / is a
   # YAML special character.
-  'field_recipe_body/value': directions
-  'field_recipe_body/summary': description
+  #field_recipe_featured:
+    # needs to have another migration to pull in the files
+    # will need to have a dependencies of that migration
+  #field_recipe_hero_image:
