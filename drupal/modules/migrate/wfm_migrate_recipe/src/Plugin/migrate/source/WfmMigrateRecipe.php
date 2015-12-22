@@ -25,20 +25,13 @@ class WfmMigrateRecipe extends SourcePluginBase {
 
   protected function initializeIterator() {
     $apiRecipe = new Recipe(API_KEY, API_SECRET, API_URL);
-    // using getAllRecipes is the easiest, but might need to use getAllRecipeIds
-    // or possibly recipeIterator
-    $apiRecipe->setLimit(5);
+    $apiRecipe->setLimit(250);
     //$rows = $apiRecipe->getAllRecipes();
-    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-1 month'));
-    // $rows must be an array or Traversable which yields arrays. That's all!
+    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-5 month'));
     $it = new \ArrayIterator($rows);
-
-
-
     return $it;
   }
 
-  // We need these functions because we are extending an abstract class
   public function getIds() {
     return array(
       '_id' => array(
@@ -90,16 +83,15 @@ class WfmMigrateRecipe extends SourcePluginBase {
 
   public function prepareRow(Row $row) {
     // do my row mods here..
+    $title = $row->getSourceProperty("title") ;
+    $str = sprintf("Processing: %s", $title);
+    drush_print_r($str);
 
     // Bail if this is a non-published recipe
     $status = $row->getSourceProperty("status");
     if ($status != 'Published') {
-      return FALSE;
+      return FALSE;  // Don't migrate non-published recipes.
     }
-
-    // e.g.
-    //$temp_title = $row->getSourceProperty("title");
-    //$row->setSourceProperty("title", strtoupper($temp_title));
 
     $nutrition = $row->getSourceProperty("basic_nutrition");
     $nutrition_string = $this->prepareNutritionInfo($nutrition);
@@ -115,23 +107,38 @@ class WfmMigrateRecipe extends SourcePluginBase {
     $row->setSourceProperty("photos", $photos);
 
     return parent::prepareRow($row);
-
-
   }
 
   public function preparePhotos($title, $photos) {
+    //$return = array();
+    //foreach ($photos as $photo) {
+    //  $filename = basename($photo['url']);
+    //  $fid = $this->lookupImageFid($filename);
+    //  $return[] = $fid;
+    //  $str = sprintf("fid: %s photo:%s", $fid, $filename);
+    //  drush_print_r($str);
+    //}
+    //return $return;
+
+    // Return only the first image
     $return = array();
-    foreach ($photos as $photo) {
-      $filename = basename($photo['url']);
-      $fid = $this->lookupImageFid($filename);
-      $return[] = $fid;
-      $str = sprintf("fid: %s photo:%s", $fid, $filename);
-      drush_print_r($str);
-    }
+    $photo = array();
+    $photo = array_shift($photos);
+    $filename = basename($photo['url']);
+    $fid = $this->lookupImageFid($filename);
+    $return[] = $fid;
+
+    //if ($fid == NULL) {
+    //  $id = "not found";
+    //}
+    //else {
+    //  $id = $fid;
+    //}
+    $str = sprintf("image: %s fid: %s", $filename, $fid);
+    drush_print_r($str);
+
     return $return;
   }
-
-
   public function lookupImageFid($image) {
     if (!strlen($image)) {
       return NULL;
@@ -140,9 +147,11 @@ class WfmMigrateRecipe extends SourcePluginBase {
       FROM {file_managed} f
       WHERE f.filename = :filename', array(':filename' => $image))
       ->fetchField();
+    if ($fid === false) {
+      $fid = NULL;
+    }
     return $fid;
   }
-
   /**
    * Grab the ingredients.
    *

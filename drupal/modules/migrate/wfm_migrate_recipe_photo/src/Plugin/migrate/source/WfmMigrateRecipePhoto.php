@@ -25,12 +25,11 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
 
   protected function initializeIterator() {
     $apiRecipe = new Recipe(API_KEY, API_SECRET, API_URL);
-    // using getAllRecipes is the easiest, but might need to use getAllRecipeIds
-    // or possibly recipeIterator
-    $apiRecipe->setLimit(20);
-    //$rows = $apiRecipe->getAllRecipes();
-    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-1 month'));
-    // $rows must be an array or Traversable which yields arrays. That's all!
+    //Limit the fields retrieved.
+    $apiRecipe->setFields(array('id', '_id', 'status', 'title','photos'));
+    $apiRecipe->setLimit(10);
+    $rows = $apiRecipe->getAllRecipes();
+    //$rows = $apiRecipe->getRecipesModifiedSince(strtotime('-120 month'));
 
     // Return all the images for all the rows.
     $uri_array = array();
@@ -45,7 +44,7 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
               'filename' => $filename,
               );
             //$uri_array += array('uri' => $row['photos']['url']);
-
+            break; //Bail after the first image.
           }
       }
     }

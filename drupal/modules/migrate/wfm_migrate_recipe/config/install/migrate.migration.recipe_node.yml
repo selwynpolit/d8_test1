@@ -32,39 +32,20 @@ process:
   'field_recipe_nutritional_info/format':
     plugin: default_value
     default_value: 'full_html'
-  field_recipe_short_description: description
+  'field_recipe_short_description/value': description
+  'field_recipe_short_description/format':
+    plugin: default_value
+    default_value: 'full_html'
   field_recipe_ingredients: ingredients
-  field_recipe_hero_image: photos
+#  'field_recipe_ingredients/value': ingredients
+#  'field_recipe_ingredients/format':
+#    plugin: default_value
+#    default_value: 'full_html'
+# Images were loaded up in a separate script - this just ties in the fid's for each image
+  'field_recipe_hero_image': photos
 #  'field_recipe_hero_image/value': photos
 #  'field_recipe_hero_image/image_alt_text': title
 #  'field_recipe_hero_image/image_title_text': title
-#  'field_recipe_hero_image/height': height
-#  'field_recipe_hero_image/width': width
-
-# looks like I need to load images in a whole other migration script
-# then here - lookup the matching ones and connect them
-# the other script WfmMigrateRecipeImages will use the dest plugin
-# entity:file
-#
-#  'field_recipe_hero_image/preserve_files': image
-#  field_recipe_hero_image:
-#    plugin: entity_file
-#    url:photos
-
-
-#    // Images.
-#    $this->addFieldMapping('field_hero_image', 'field_hero_image');
-#    $this->addFieldMapping('field_hero_image:file_class')
-#      ->defaultValue('MigrateFileUri');
-#    $this->addFieldMapping('field_hero_image:destination_dir')
-#      ->defaultValue('public://media');
-#    $this->addFieldMapping('field_hero_image:destination_file', 'image_filename');
-#    $this->addFieldMapping('field_hero_image:file_replace')
-#      ->defaultValue(MigrateFile::FILE_EXISTS_REUSE);
-#    $this->addFieldMapping('field_hero_image:preserve_files')
-#      ->defaultValue(TRUE);
-#    $this->addFieldMapping('field_hero_image:alt', 'image_alt_text');
-#    $this->addFieldMapping('field_hero_image:title', 'image_title_text');
 
 
 
