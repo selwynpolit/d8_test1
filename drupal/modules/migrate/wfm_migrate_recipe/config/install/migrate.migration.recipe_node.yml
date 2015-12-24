@@ -37,12 +37,20 @@ process:
     plugin: default_value
     default_value: 'full_html'
   field_recipe_ingredients: ingredients
+# Next 4 lines causes major digestive problems - see https://www.drupal.org/node/2639556
 #  'field_recipe_ingredients/value': ingredients
 #  'field_recipe_ingredients/format':
 #    plugin: default_value
 #    default_value: 'full_html'
 # Images were loaded up in a separate script - this just ties in the fid's for each image
   'field_recipe_hero_image': photos
+
+# No luck getting this target_id, alt or title working..
+#  'field_recipe_hero_image/target_id': photos
+#  'field_recipe_hero_image/alt': title
+#  'field_recipe_hero_image/title': title
+
+# no damned luck making alt_text or title text work
 #  'field_recipe_hero_image/value': photos
 #  'field_recipe_hero_image/image_alt_text': title
 #  'field_recipe_hero_image/image_title_text': title

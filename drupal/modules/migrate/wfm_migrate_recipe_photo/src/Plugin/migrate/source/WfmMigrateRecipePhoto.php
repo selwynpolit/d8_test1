@@ -29,8 +29,8 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     $apiRecipe->setFields(array('id', '_id', 'status', 'title','photos'));
     //$rows = $apiRecipe->getAllRecipes();
 
-    $apiRecipe->setLimit(20);
-    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-120 month'));
+    $apiRecipe->setLimit(50);
+    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-240 month'));
 
     // Return all the images for all the rows.
     $uri_array = array();

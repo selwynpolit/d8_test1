@@ -25,9 +25,9 @@ class WfmMigrateRecipe extends SourcePluginBase {
 
   protected function initializeIterator() {
     $apiRecipe = new Recipe(API_KEY, API_SECRET, API_URL);
-    $apiRecipe->setLimit(250);
+    $apiRecipe->setLimit(50);
+    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-240 month'));
     //$rows = $apiRecipe->getAllRecipes();
-    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-5 month'));
     $it = new \ArrayIterator($rows);
     return $it;
   }
@@ -125,6 +125,8 @@ class WfmMigrateRecipe extends SourcePluginBase {
     $photo = array();
     $photo = array_shift($photos);
     $filename = basename($photo['url']);
+    //Modify the image filename to prepend recipe_hero_images for funky photo migrate.
+    $filename = "recipe_hero_images" . $filename;
     $fid = $this->lookupImageFid($filename);
     $return[] = $fid;
 
