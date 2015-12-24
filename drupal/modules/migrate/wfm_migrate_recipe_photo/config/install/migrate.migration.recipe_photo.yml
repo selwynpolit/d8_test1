@@ -8,13 +8,13 @@ destination:
   plugin: entity:file
   urlencode: true
   source_path_property: uri
+#  destination_path_property: dest_path
+  destination_path_property: uri
 process:
   uid:
     plugin: default_value
     default_value: 1
-#  filename: image_filename
-  uri: filename_with_path
-  filename: filename
+  uri: filename_with_path  #need public:// prepended otherwise files get put in docroot.
 
 #  destination_path: destination_path
 #  source_path: filename
@@ -22,24 +22,6 @@ process:
 #  created: created
 #  changed: created
 
-#  'field_recipe_hero_image/preserve_files': image
-#  field_recipe_hero_image:
-#    plugin: entity_file
-#    url:photos
 
-
-#    // Images.
-#    $this->addFieldMapping('field_hero_image', 'field_hero_image');
-#    $this->addFieldMapping('field_hero_image:file_class')
-#      ->defaultValue('MigrateFileUri');
-#    $this->addFieldMapping('field_hero_image:destination_dir')
-#      ->defaultValue('public://media');
-#    $this->addFieldMapping('field_hero_image:destination_file', 'image_filename');
-#    $this->addFieldMapping('field_hero_image:file_replace')
-#      ->defaultValue(MigrateFile::FILE_EXISTS_REUSE);
-#    $this->addFieldMapping('field_hero_image:preserve_files')
-#      ->defaultValue(TRUE);
-#    $this->addFieldMapping('field_hero_image:alt', 'image_alt_text');
-#    $this->addFieldMapping('field_hero_image:title', 'image_title_text');
 
 

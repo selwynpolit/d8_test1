@@ -27,9 +27,10 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     $apiRecipe = new Recipe(API_KEY, API_SECRET, API_URL);
     //Limit the fields retrieved.
     $apiRecipe->setFields(array('id', '_id', 'status', 'title','photos'));
-    $apiRecipe->setLimit(10);
-    $rows = $apiRecipe->getAllRecipes();
-    //$rows = $apiRecipe->getRecipesModifiedSince(strtotime('-120 month'));
+    //$rows = $apiRecipe->getAllRecipes();
+
+    $apiRecipe->setLimit(20);
+    $rows = $apiRecipe->getRecipesModifiedSince(strtotime('-120 month'));
 
     // Return all the images for all the rows.
     $uri_array = array();
@@ -40,8 +41,15 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
             $filename = basename($photo['url']);
             $uri_array[] = array(
               'uri' => $photo['url'],
-              'filename_with_path' => 'public://' . $filename,
-              'filename' => $filename,
+              // This version will store the images in sites/default/files.
+              //'filename_with_path' => 'public://' . $filename,
+
+              // This version will save the files in sites/default/files
+              // with recipe_hero_images prepended to each filename.
+              'filename_with_path' => 'public://recipe_hero_images' . $filename,
+
+              //'filename' => $filename,
+              //'dest_path' => 'public://recipe_hero_images/' . $filename
               );
             //$uri_array += array('uri' => $row['photos']['url']);
             break; //Bail after the first image.
@@ -123,9 +131,15 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
     //  return FALSE;
     //}
 
-    $filename = $row->getSourceProperty("filename") ;
-    $str = sprintf("Processing: %s", $filename);
+    //$filename = $row->getSourceProperty("filename") ;
+    //$str = sprintf("Processing: %s", $filename);
+    //drush_print_r($str);
+
+    $uri = $row->getSourceProperty("uri") ;
+    $str = sprintf("Processing: %s", $uri);
     drush_print_r($str);
+
+
 
     return parent::prepareRow($row);
   }
