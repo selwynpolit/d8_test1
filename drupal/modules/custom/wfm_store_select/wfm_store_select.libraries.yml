@@ -1,6 +1,7 @@
 store.select:
+  version: 1.x
   js:
-    js/wfm-store-select.js:{}
+    js/wfm-store-select.js: {}
   dependencies:
         - core/jquery
         - core/drupalSettings

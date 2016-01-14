@@ -9,6 +9,7 @@ use Drupal\Core\Entity;
 //use Drupal\Core\Session\AccountInterface;
 //use \Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class WfmStoreSelectController extends ControllerBase {
 
@@ -38,6 +39,8 @@ class WfmStoreSelectController extends ControllerBase {
       return array(
         '#markup' => t('logged in mofo This is the demo foobar page.'),
       );
+    //} else {
+    //  return new RedirectResponse(\Drupal::url('user.page'));
     }
   }
 }

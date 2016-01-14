@@ -1,32 +1,29 @@
-/**
- * Created by selwyn.polit on 12/29/15.
- */
-
-(function ($, Drupal) {
+(function ($, Drupal, drupalSettings) {
+//(function ($) {
 
   'use strict';
-  console.log('tom was here');
+
   /**
    * @namespace
    */
   Drupal.storeSelect = {};
-
-  /**
-   * Improve the user experience of the views edit interface.
-   *
-   * @type {Drupal~behavior}
-   *
-   * @prop {Drupal~behaviorAttach} attach
-   *   Attaches toggling of SQL rewrite warning on the corresponding checkbox.
-   */
   Drupal.behaviors.makeThisMyStore = {
-
     attach: function (event) {
-      console.log('tom was here inside attach');
-      $('.add_store').on('click', function () {
-        alert('you bastard!');
+      $('.add_store').on('click', function (event) {
+        var href = $(this).attr('href');
+        var storeTLC = href.substr(href.length - 3);
+        console.log(tlc);
+        setCookie('store', storeTLC,7);
         event.preventDefault();
       });
     }
   };
-})();
+})(jQuery,Drupal);
+
+function setCookie(cname, cvalue, exdays) {
+  console.log('writing cookie');
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + "; " + expires;
+}
