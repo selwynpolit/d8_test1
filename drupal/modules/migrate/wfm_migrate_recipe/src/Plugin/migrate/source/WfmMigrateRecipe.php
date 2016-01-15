@@ -126,7 +126,8 @@ class WfmMigrateRecipe extends SourcePluginBase {
     $photo = array_shift($photos);
     $filename = basename($photo['url']);
     //Modify the image filename to prepend recipe_hero_images for funky photo migrate.
-    $filename = "recipe_hero_images" . $filename;
+    //$filename = "recipe_hero_images" . $filename;
+
     $fid = $this->lookupImageFid($filename);
     $return[] = $fid;
 

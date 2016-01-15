@@ -46,7 +46,11 @@ class WfmMigrateRecipePhoto extends SourcePluginBase {
 
               // This version will save the files in sites/default/files
               // with recipe_hero_images prepended to each filename.
-              'filename_with_path' => 'public://recipe_hero_images' . $filename,
+              //'filename_with_path' => 'public://recipe_hero_images' . $filename,
+
+              // This version will save the files in sites/default/files/recipe_hero_images
+              'filename_with_path' => 'public://recipe_hero_images/' . $filename,
+
 
               //'filename' => $filename,
               //'dest_path' => 'public://recipe_hero_images/' . $filename
