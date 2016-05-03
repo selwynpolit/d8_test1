@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\wfmproduct\Plugin\migrate\source\ProductNode.
+ * Contains \Drupal\wfm_migrate_product\Plugin\migrate\source\ProductNode.
  */
 
 namespace Drupal\wfm_migrate_product\Plugin\migrate\source;
@@ -34,8 +34,8 @@ class ProductNode extends SqlBase {
         'identifier',
         'brand',
         'description',
-        'subTeamNumber',
-        'subTeam',
+        'subteamnumber',
+        'subteam',
         'size',
         'uom'
       ])
@@ -51,8 +51,8 @@ class ProductNode extends SqlBase {
       'identifier' => $this->t('Product ID'),
       'brand' => $this->t('Product Brand'),
       'description' => $this->t('Description of the product'),
-      'subTeamNumber' => $this->t('Subteam Number'),
-      'subTeam' => $this->t('Subteam'),
+      'subteam' => $this->t('Subteam'),
+      'subteamnumber' => $this->t('Subteam Number'),
       'size' => $this->t('Size'),
       'uom' => $this->t('Unit of Measure'),
       // Note that this field is not part of the query above - it is populated
@@ -83,6 +83,9 @@ class ProductNode extends SqlBase {
     /**
      * Let's go get the subTeam taxonomy tid for each product
      */
+//    $subteam = $row->getSourceProperty('subTeam');
+    $subteam = $row->getSourceProperty('subteam');
+    $row->setSourceProperty('subTeam',$subteam);
 
     /**
      * As explained above, we need to pull the style relationships into our

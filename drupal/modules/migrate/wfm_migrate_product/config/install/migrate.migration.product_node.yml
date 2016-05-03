@@ -4,16 +4,15 @@ label: Products from Sage stored in mysql db
 migration_group: wfm
 source:
   plugin: product_node
+  key: default
 destination:
   plugin: entity:node
 process:
   # Hardcode the destination node type (bundle) as 'migrate_example_recipe'.
   type:
     plugin: default_value
-    default_value: product_node
+    default_value: product
   title: description
-#  nid: _id # Note. comment nid out so migrate will auto generate a nid
-# else nid is expecting a value for the nid
   langcode:
     plugin: default_value
     source: language
@@ -25,12 +24,12 @@ process:
     plugin: default_value
     default_value: 0
   field_title: description
-  field_product_identifier: identifier
-  field_product_brand: brand
   field_product_subteam_number: subteamnumber
   field_product_subteam: subteam
+  field_product_identifier: identifier
+  field_product_brand: brand
   field_product_size: size
   field_product_uom: uom
-  field_crap: crap
+
 
 
