@@ -24,12 +24,12 @@ process:
     plugin: default_value
     default_value: 0
   field_title: description
-  field_product_subteam_number: subteamnumber
+  field_product_subteamnumber: subteamnumber
   field_product_subteam: subteam
   field_product_identifier: identifier
   field_product_brand: brand
   field_product_size: size
-  field_product_uom: uom
+  field_product_unit_of_measure: uom
 
 
 

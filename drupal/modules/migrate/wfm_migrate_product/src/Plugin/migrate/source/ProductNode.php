@@ -84,8 +84,8 @@ class ProductNode extends SqlBase {
      * Let's go get the subTeam taxonomy tid for each product
      */
 //    $subteam = $row->getSourceProperty('subTeam');
-    $subteam = $row->getSourceProperty('subteam');
-    $row->setSourceProperty('subTeam',$subteam);
+    $subteamnumber = $row->getSourceProperty('subteamnumber');
+    $row->setSourceProperty('subTeamnumber',$subteamnumber);
 
     /**
      * As explained above, we need to pull the style relationships into our
