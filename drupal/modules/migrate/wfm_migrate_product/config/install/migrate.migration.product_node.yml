@@ -11,7 +11,7 @@ process:
   # Hardcode the destination node type (bundle) as 'migrate_example_recipe'.
   type:
     plugin: default_value
-    default_value: product
+    default_value: product  #content type
   title: description
   langcode:
     plugin: default_value
