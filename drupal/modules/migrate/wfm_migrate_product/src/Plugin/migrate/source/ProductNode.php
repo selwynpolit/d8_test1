@@ -55,10 +55,8 @@ class ProductNode extends SqlBase {
       'subteamnumber' => $this->t('Subteam Number'),
       'size' => $this->t('Size'),
       'uom' => $this->t('Unit of Measure'),
-      // Note that this field is not part of the query above - it is populated
-      // by prepareRow() below. You should document all source properties that
-      // are available for mapping after prepareRow() is called.
-//      'terms' => $this->t('Applicable styles'),
+      'images' => $this->t('Images'), // Note that this field is not part of the query above - it is populated
+      // by prepareRow() below.
     ];
 
     return $fields;
@@ -83,28 +81,44 @@ class ProductNode extends SqlBase {
     /**
      * Let's go get the subTeam taxonomy tid for each product
      */
-//    $subteam = $row->getSourceProperty('subTeam');
     $subteamnumber = $row->getSourceProperty('subteamnumber');
     $row->setSourceProperty('subTeamnumber',$subteamnumber);
 
-    /**
-     * As explained above, we need to pull the style relationships into our
-     * source row here, as an array of 'style' values (the unique ID for
-     * the beer_term migration).
-     */
-//    $terms = $this->select('migrate_example_beer_topic_node', 'bt')
-//      ->fields('bt', ['style'])
-//      ->condition('bid', $row->getSourceProperty('bid'))
-//      ->execute()
-//      ->fetchCol();
-//    $row->setSourceProperty('terms', $terms);
+    $id = $row->getSourceProperty('identifier');
+    drush_print_r($id);
 
-    // As we did for favorite beers in the user migration, we need to explode
-    // the multi-value country names.
-//    if ($value = $row->getSourceProperty('countries')) {
-//      $row->setSourceProperty('countries', explode('|', $value));
-//    }
+    $fids = array();
+    $results = $this->select('images','i')
+      ->fields('i',array('identifier','url','angle'))
+      ->orderby('angle','DESC')
+      ->condition('identifier',$row->getSourceProperty('identifier'))
+      ->execute();
+    foreach ($results as $result) {
+      $pic = basename($result['url']);
+      drush_print_r($pic);
+//      drush_print_r($result['angle']);
+      $fids[] = $this->lookupImageFid($pic);
+    }
+    if (count($fids)) {
+      if (count($fids)>1) {
+        drupal_set_message("fids >1\n");
+      }
+      $row->setSourceProperty('images',$fids);
+    }
     return parent::prepareRow($row);
 //  }
+  }
+  public function lookupImageFid($image) {
+    if (!strlen($image)) {
+      return NULL;
+    }
+    $fid = db_query('SELECT f.fid
+      FROM {file_managed} f
+      WHERE f.filename = :filename', array(':filename' => $image))
+      ->fetchField();
+    if ($fid === false) {
+      $fid = NULL;
+    }
+    return $fid;
   }
 }
