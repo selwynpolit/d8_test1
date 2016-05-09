@@ -24,7 +24,7 @@ require('config.php');
 class WfmMigrateStore extends SourcePluginBase {
   protected function initializeIterator() {
     $apiStore = new Store(API_KEY, API_SECRET, API_URL);
-    $apiStore->setLimit(15);
+    $apiStore->setLimit(500);
     //$rows = $apiStore->getAllStores();
     // TODO: Select only the following fields
     //  $apiStore->setFields(array('name', 'tlc', 'address','zip_code', 'twitter'));

@@ -96,13 +96,13 @@ class ProductNode extends SqlBase {
     foreach ($results as $result) {
       $pic = basename($result['url']);
       drush_print_r($pic);
-//      drush_print_r($result['angle']);
+      drush_print_r($result['angle']);
       $fids[] = $this->lookupImageFid($pic);
     }
     if (count($fids)) {
-      if (count($fids)>1) {
-        drupal_set_message("fids >1\n");
-      }
+//      if (count($fids)>1) {
+//        drupal_set_message("fids >1\n");
+//      }
       $row->setSourceProperty('images',$fids);
     }
     return parent::prepareRow($row);

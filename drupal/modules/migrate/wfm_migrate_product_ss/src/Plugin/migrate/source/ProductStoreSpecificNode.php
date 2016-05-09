@@ -32,6 +32,7 @@ class ProductStoreSpecificNode extends SqlBase {
      */
     $query = $this->select('storeinfo', 's')
       ->fields('s', [
+        'ssid',
         'identifier',
         'tlc',
         'currency',
@@ -44,7 +45,7 @@ class ProductStoreSpecificNode extends SqlBase {
         'saleend',
         'available',
       ])
-      ->orderBy('identifier');
+      ->orderBy('ssid');
     return $query;
   }
 
@@ -53,6 +54,7 @@ class ProductStoreSpecificNode extends SqlBase {
    */
   public function fields() {
     $fields = [
+      'ssid' => $this->t('Product ID-TLC Unique field'),
       'identifier' => $this->t('Product ID'),
       'tlc' => $this->t('Three Letter Code'),
       'currency' => $this->t('Currency'),
@@ -72,7 +74,7 @@ class ProductStoreSpecificNode extends SqlBase {
    */
   public function getIds() {
     return [
-      'identifier' => [
+      'ssid' => [
         'type' => 'string',
         'alias' => 's',
       ],
@@ -88,21 +90,19 @@ class ProductStoreSpecificNode extends SqlBase {
      */
     $start = $row->getSourceProperty('salestart');
     if (!is_null($start)) {
-      drupal_set_message('start:' . $start) ;
+//      drupal_set_message('start:' . $start) ;
       $timestamp = strtotime($start);
       $start = date("Y-m-d\TH:i:s", $timestamp);
-//    $timestamp = new DateTime($row->modified_at2);
-//    $start = $timestamp->format('Y-m-d H:i:s');
-      drupal_set_message('reformatted start: ' . $start);
+//      drupal_set_message('reformatted start: ' . $start);
       $row->setSourceProperty('salestart',$start);
     }
 
     $end = $row->getSourceProperty('saleend');
     if (!is_null($end)) {
-      drupal_set_message('end:' . $end);
+//      drupal_set_message('end:' . $end);
       $timestamp = strtotime($start);
       $end = date("Y-m-d\TH:i:s", $timestamp);
-      drupal_set_message('reformatted end: ' . $end);
+//      drupal_set_message('reformatted end: ' . $end);
       $row->setSourceProperty('saleend',$end);
     }
 

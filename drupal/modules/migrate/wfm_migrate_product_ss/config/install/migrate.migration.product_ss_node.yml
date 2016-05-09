@@ -12,7 +12,7 @@ process:
   type:
     plugin: default_value
     default_value: prod_store_specific  #content type
-  title: identifier
+  title: ssid
   langcode:
     plugin: default_value
     source: language
