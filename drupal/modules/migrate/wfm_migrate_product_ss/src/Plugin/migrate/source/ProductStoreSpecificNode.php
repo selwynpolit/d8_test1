@@ -106,6 +106,17 @@ class ProductStoreSpecificNode extends SqlBase {
       $row->setSourceProperty('saleend',$end);
     }
 
+    // Fill in the field_product_ref entity ref to the product node.
+    $id = $row->getSourceProperty('identifier');
+    $product_ref_id = $this->lookupProductNid($id);
+    $row->setSourceProperty('product_ref_id',$product_ref_id);
+
+    $tlc = $row->getSourceProperty('tlc');
+    $store_ref_id = $this->lookupStoreNid($tlc);
+    $row->setSourceProperty('store_ref_id',$store_ref_id);
+
+    $ssid = $row->getSourceProperty('ssid');
+    drupal_set_message('Processing: ' . $ssid);
     /**
      * As explained above, we need to pull the style relationships into our
      * source row here, as an array of 'style' values (the unique ID for
@@ -126,4 +137,40 @@ class ProductStoreSpecificNode extends SqlBase {
     return parent::prepareRow($row);
 //  }
   }
+  public function lookupProductNid($id) {
+    if (!strlen($id)) {
+      return NULL;
+    }
+    $eid = db_query('SELECT f.entity_id
+      FROM {node__field_product_identifier} f
+      WHERE f.field_product_identifier_value = :id', array(':id' => $id))
+      ->fetchField();
+    if ($eid === false) {
+      $eid = NULL;
+    }
+    return $eid;
+  }
+
+  /**
+   *
+   * Find the matching store nid for the tlc param.
+   *
+   * @param $tlc
+   * @return entity id
+   */
+  public function lookupStoreNid($tlc) {
+    if (!strlen($tlc)) {
+      return NULL;
+    }
+    $eid = db_query('SELECT f.entity_id
+      FROM {node__field_store_tlc} f
+      WHERE f.field_store_tlc_value = :tlc', array(':tlc' => $tlc))
+      ->fetchField();
+    if ($eid === false) {
+      $eid = NULL;
+    }
+    return $eid;
+  }
+
+
 }

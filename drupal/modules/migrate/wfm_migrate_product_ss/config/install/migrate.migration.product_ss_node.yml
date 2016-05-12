@@ -34,6 +34,8 @@ process:
   field_ss_sale_price: saleprice
   field_ss_sale_start: salestart
   field_ss_tlc: tlc
+  field_ss_product_ref: product_ref_id
+  field_ss_store_ref: store_ref_id
 
 
 
